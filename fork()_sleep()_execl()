@@ -1,0 +1,2 @@
+//write a  program to create a child process using fork() the parent should go to sleep() sate 4 child should begin its execution in the child process use execl() to execute the ls command
+
