@@ -1,0 +1,45 @@
+// WAP to find to execution time  taken for execution of given set of instruction 
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+
+int main() {
+    int child_pid;
+
+    printf("Parent process (PID %d) is running.\n", getpid());
+
+
+    if ((child_pid = fork()) < 0) {
+        perror("Fork failed");
+        exit(1);
+    }
+
+    if (child_pid == 0) {
+  
+
+        printf("Child process (PID %d) is running.\n", getpid());
+
+      
+        if (nice(10) == -1) {
+            perror("Nice failed");
+            exit(1);
+        }
+
+        printf("Child process (PID %d) now has a higher priority.\n", getpid());
+    } else {
+     
+        int status;
+        wait(&status);
+
+        if (WIFEXITED(status)) {
+            printf("Child process (PID %d) exited with status %d.\n", child_pid, WEXITSTATUS(status));
+        } else {
+            perror("Child process did not exit normally");
+            exit(1);
+        }
+    }
+
+    return 0;
+}
