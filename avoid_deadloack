@@ -1,0 +1,123 @@
+ //wap to calculate min number of needed to avoid deadlock
+
+-----------------------------------------------------------------------1-----------------------------------------------------------------------------------------
+
+#include <stdio.h>
+
+// Maximum number of processes and resources
+#define MAX_PROCESSES 5
+#define MAX_RESOURCES 3
+
+// Function to check if a process can request resources
+int canAllocate(int need[MAX_PROCESSES][MAX_RESOURCES], int available[MAX_RESOURCES], int process, int request[MAX_RESOURCES]) {
+    for (int i = 0; i < MAX_RESOURCES; i++) {
+        if (request[i] > need[process][i] || request[i] > available[i]) {
+            return 0;
+        }
+    }
+    return 1;
+}
+
+// Function to allocate resources to a process
+void allocateResources(int allocated[MAX_PROCESSES][MAX_RESOURCES], int available[MAX_RESOURCES], int process, int request[MAX_RESOURCES]) {
+    for (int i = 0; i < MAX_RESOURCES; i++) {
+        allocated[process][i] += request[i];
+        available[i] -= request[i];
+    }
+}
+
+// Function to release resources from a process
+void releaseResources(int allocated[MAX_PROCESSES][MAX_RESOURCES], int available[MAX_RESOURCES], int process, int release[MAX_RESOURCES])
+ {
+    for (int i = 0; i < MAX_RESOURCES; i++) {
+        allocated[process][i] -= release[i];
+        available[i] += release[i];
+    }
+}
+
+int main() {
+    int allocated[MAX_PROCESSES][MAX_RESOURCES] = {{0, 1, 0}, {2, 0, 0}, {3, 0, 2}, {2, 1, 1}, {0, 0, 2}};
+    int max[MAX_PROCESSES][MAX_RESOURCES] = {{7, 5, 3}, {3, 2, 2}, {9, 0, 2}, {2, 2, 2}, {4, 3, 3}};
+    int available[MAX_RESOURCES] = {3, 3, 2};
+    int need[MAX_PROCESSES][MAX_RESOURCES];
+
+    // Calculate need matrix
+    for (int i = 0; i < MAX_PROCESSES; i++) {
+        for (int j = 0; j < MAX_RESOURCES; j++) {
+            need[i][j] = max[i][j] - allocated[i][j];
+        }
+    }
+
+    int request[MAX_RESOURCES] = {0, 0, 0};
+    int process;
+
+    printf("Enter process number (0-4): ");
+    scanf("%d", &process);
+
+    printf("Enter resource request for process %d: ", process);
+    for (int i = 0; i < MAX_RESOURCES; i++) {
+        scanf("%d", &request[i]);
+    }
+
+    if (canAllocate(need, available, process, request)) {
+        allocateResources(allocated, available, process, request);
+        printf("Resource allocated successfully.\n");
+    } else {
+        printf("Resource allocation failed. Process must wait to avoid deadlock.\n");
+    }
+
+    return 0;
+}
+
+
+
+
+---------------------------------------------------------------------------------2-------------------------------------------------------------------------------
+
+
+#include <stdio.h>
+
+int main() {
+    int available[2]; // Available instances of each resource type
+    int max[10][2];   // Maximum demand of each process for each resource
+    int allocation[10][2]; // Resources allocated to each process
+    int need[10][2]; // Need of each process for each resource
+    int n, m; // Number of processes and resource types
+
+    // Input the number of processes and resource types
+    printf("Enter the number of processes: ");
+    scanf("%d", &n);
+    printf("Enter the number of resource types: ");
+    scanf("%d", &m);
+
+    // Input the available resources
+    printf("Enter the available resources for each type:\n");
+    for (int i = 0; i < m; i++) {
+        scanf("%d", &available[i]);
+    }
+
+    // Input the maximum demand for each process
+    printf("Enter the maximum demand of each process for each resource:\n");
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < m; j++) {
+            scanf("%d", &max[i][j]);
+        }
+    }
+
+    // Input the resources allocated to each process
+    printf("Enter the resources allocated to each process:\n");
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < m; j++) {
+            scanf("%d", &allocation[i][j]);
+            // Calculate the need of each process
+            need[i][j] = max[i][j] - allocation[i][j];
+        }
+    }
+
+    // Add your code here to calculate the minimum number of resources needed to avoid deadlock
+    // This might involve implementing the Banker's algorithm or a similar algorithm
+
+    printf("Minimum resources needed to avoid deadlock: <your_result_here>\n");
+
+    return 0;
+}
