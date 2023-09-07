@@ -1,23 +1,33 @@
 // WAP the use of nice call . after child process is started using fork() assin higher priority to the child using nice() system call
 
-
-#include <unistd.h> 
 #include <stdio.h>
-int main(void) {
+#include <stdlib.h>
+#include <unistd.h>
 
-    char message[] = "Hello, world!\n"; 
-    int length = sizeof(message) - 1; 
+int main() {
+    int current_priority;
 
-    
-    int bytes_written = write(1, message, length);
+    // Get the current priority of the process
+    current_priority = nice(0);
 
-    if (bytes_written == -1) {
-        // If write returns -1, there was an error
-       printf("Error writing to standard output");
-        return 1; // Return an error code
+    if (current_priority == -1) {
+        perror("nice");
+        exit(EXIT_FAILURE);
     }
 
- return 0;    // Return success
+    printf("Current process priority: %d\n", current_priority);
+
+    // Increase the priority by 10
+    int new_priority = nice(10);
+
+    if (new_priority == -1) {
+        perror("nice");
+        exit(EXIT_FAILURE);
+    }
+
+    printf("Increased process priority by 10: %d\n", new_priority);
+
+    return 0;
 }
 
 
