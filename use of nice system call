@@ -1,0 +1,23 @@
+// WAP the use of nice call . after child process is started using fork() assin higher priority to the child using nice() system call
+
+
+#include <unistd.h> 
+#include <stdio.h>
+int main(void) {
+
+    char message[] = "Hello, world!\n"; 
+    int length = sizeof(message) - 1; 
+
+    
+    int bytes_written = write(1, message, length);
+
+    if (bytes_written == -1) {
+        // If write returns -1, there was an error
+       printf("Error writing to standard output");
+        return 1; // Return an error code
+    }
+
+ return 0;    // Return success
+}
+
+
