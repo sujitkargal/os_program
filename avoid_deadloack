@@ -78,11 +78,11 @@ int main() {
 #include <stdio.h>
 
 int main() {
-    int available[2]; // Available instances of each resource type
-    int max[10][2];   // Maximum demand of each process for each resource
-    int allocation[10][2]; // Resources allocated to each process
-    int need[10][2]; // Need of each process for each resource
-    int n, m; // Number of processes and resource types
+    int available[2];         // Available instances of each resource type
+    int max[10][2];           // Maximum demand of each process for each resource
+    int allocation[10][2];    // Resources allocated to each process
+    int need[10][2];          // Need of each process for each resource
+    int n, m;                 // Number of processes and resource types
 
     // Input the number of processes and resource types
     printf("Enter the number of processes: ");
@@ -121,3 +121,4 @@ int main() {
 
     return 0;
 }
+
